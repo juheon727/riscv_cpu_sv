@@ -133,9 +133,38 @@ always_comb begin
                     alu_opcode = 4'b0010;
                     illegal = 1'b0;
                 end
-                10'b0100000000: begin
+                10'b0110000000: begin
                     reg_write = 1'b1;
                     alu_opcode = 4'b0110;
+                    illegal = 1'b0;
+                end
+            endcase
+        end
+        //immediate arithmetic: andi, ori, addi
+        7'b0010011: begin
+            case (funct3)
+                3'b111: begin
+                    reg_write = 1'b1;
+                    alu_opcode = 4'b0;
+                    use_imm_in_alu = 1'b1;
+                    imm12 = instr[31:20];
+                    imm = imm_mem;
+                    illegal = 1'b0;
+                end
+                3'b110: begin
+                    reg_write = 1'b1;
+                    alu_opcode = 4'b0001;
+                    use_imm_in_alu = 1'b1;
+                    imm12 = instr[31:20];
+                    imm = imm_mem;
+                    illegal = 1'b0;
+                end
+                3'b000: begin
+                    reg_write = 1'b1;
+                    alu_opcode = 4'b0010;
+                    use_imm_in_alu = 1'b1;
+                    imm12 = instr[31:20];
+                    imm = imm_mem;
                     illegal = 1'b0;
                 end
             endcase

@@ -6,7 +6,7 @@ module synchronous_memory #(
     input logic reset,
     input logic read_enable,
     input logic write_enable,
-    input logic [WORD_SIZE - 1 : 0] addr,
+    input logic [ADDR_WIDTH - 1 : 0] addr,
     input logic [WORD_SIZE - 1 : 0] write_data,
     output logic [WORD_SIZE - 1 : 0] read_data
 );
