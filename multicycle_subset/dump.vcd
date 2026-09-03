@@ -1,0 +1,340 @@
+$date
+	Thu Sep  3 10:36:46 2026
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module riscv64_subset_core_multicycle_tb $end
+$var wire 64 ! imem_addr [63:0] $end
+$var wire 1 " dmem_write $end
+$var wire 1 # dmem_read $end
+$var wire 64 $ dmem_data [63:0] $end
+$var wire 64 % dmem_addr [63:0] $end
+$var reg 1 & clk $end
+$var reg 64 ' dmem_fetch [63:0] $end
+$var reg 32 ( instr [31:0] $end
+$var reg 1 ) reset $end
+$scope module dut $end
+$var wire 1 & clk $end
+$var wire 64 * dmem_fetch [63:0] $end
+$var wire 1 # dmem_read $end
+$var wire 1 " dmem_write $end
+$var wire 64 + imem_addr [63:0] $end
+$var wire 32 , instr [31:0] $end
+$var wire 1 - reg_write $end
+$var wire 1 ) reset $end
+$var wire 1 . zero_flag $end
+$var wire 1 / use_imm_in_alu $end
+$var wire 1 0 reg_write_dec $end
+$var wire 5 1 reg_waddr [4:0] $end
+$var wire 64 2 reg_rdata2 [63:0] $end
+$var wire 64 3 reg_rdata1 [63:0] $end
+$var wire 5 4 reg_raddr2 [4:0] $end
+$var wire 5 5 reg_raddr1 [4:0] $end
+$var wire 1 6 load_instr $end
+$var wire 64 7 imm [63:0] $end
+$var wire 1 8 illegal $end
+$var wire 1 9 dmem_write_dec $end
+$var wire 1 : dmem_read_dec $end
+$var wire 64 ; dmem_data [63:0] $end
+$var wire 64 < dmem_addr [63:0] $end
+$var wire 1 = branch $end
+$var wire 64 > alu_result_wb [63:0] $end
+$var wire 64 ? alu_result [63:0] $end
+$var wire 4 @ alu_opcode [3:0] $end
+$var reg 64 A alu_input2 [63:0] $end
+$var reg 64 B instr_addr [63:0] $end
+$var reg 64 C next_instr_addr [63:0] $end
+$var reg 64 D reg_wdata [63:0] $end
+$var integer 32 E processor_state [31:0] $end
+$scope module alu $end
+$var wire 64 F operand_2 [63:0] $end
+$var wire 1 . zero_flag $end
+$var wire 64 G operand_1 [63:0] $end
+$var wire 4 H opcode [3:0] $end
+$var reg 64 I result [63:0] $end
+$upscope $end
+$scope module alu_result_dff_ex_mem $end
+$var wire 1 & clk $end
+$var wire 1 ) reset $end
+$var wire 64 J write_data [63:0] $end
+$var wire 1 K write_enable $end
+$var parameter 32 L WORD_SIZE $end
+$var reg 64 M stored_data [63:0] $end
+$upscope $end
+$scope module alu_result_dff_mem_wb $end
+$var wire 1 & clk $end
+$var wire 1 ) reset $end
+$var wire 64 N write_data [63:0] $end
+$var wire 1 O write_enable $end
+$var parameter 32 P WORD_SIZE $end
+$var reg 64 Q stored_data [63:0] $end
+$upscope $end
+$scope module instr_decoder $end
+$var wire 32 R instr [31:0] $end
+$var wire 5 S reg_waddr [4:0] $end
+$var wire 5 T reg_raddr2 [4:0] $end
+$var wire 5 U reg_raddr1 [4:0] $end
+$var wire 7 V opcode [6:0] $end
+$var wire 64 W imm_mem [63:0] $end
+$var wire 64 X imm_b [63:0] $end
+$var wire 7 Y funct7 [6:0] $end
+$var wire 3 Z funct3 [2:0] $end
+$var reg 4 [ alu_opcode [3:0] $end
+$var reg 1 = branch $end
+$var reg 1 : dmem_read $end
+$var reg 1 9 dmem_write $end
+$var reg 1 8 illegal $end
+$var reg 64 \ imm [63:0] $end
+$var reg 12 ] imm12 [11:0] $end
+$var reg 13 ^ imm13 [12:0] $end
+$var reg 1 6 load_instr $end
+$var reg 1 0 reg_write $end
+$var reg 1 / use_imm_in_alu $end
+$scope module imm_extender_b $end
+$var wire 13 _ imm_in [12:0] $end
+$var wire 64 ` imm_out [63:0] $end
+$var parameter 32 a IMM_WIDTH_IN $end
+$var parameter 32 b IMM_WIDTH_OUT $end
+$upscope $end
+$scope module imm_extender_mem $end
+$var wire 12 c imm_in [11:0] $end
+$var wire 64 d imm_out [63:0] $end
+$var parameter 32 e IMM_WIDTH_IN $end
+$var parameter 32 f IMM_WIDTH_OUT $end
+$upscope $end
+$upscope $end
+$scope module reg_rdata2_dff_ex_mem $end
+$var wire 1 & clk $end
+$var wire 1 ) reset $end
+$var wire 1 g write_enable $end
+$var wire 64 h write_data [63:0] $end
+$var parameter 32 i WORD_SIZE $end
+$var reg 64 j stored_data [63:0] $end
+$upscope $end
+$scope module regfile $end
+$var wire 1 & clk $end
+$var wire 5 k read_addr1 [4:0] $end
+$var wire 5 l read_addr2 [4:0] $end
+$var wire 1 ) reset $end
+$var wire 5 m write_addr [4:0] $end
+$var wire 64 n write_data [63:0] $end
+$var wire 1 - write_enable $end
+$var reg 1 o read_addr1_nonzero $end
+$var reg 1 p read_addr2_nonzero $end
+$var reg 64 q read_port1 [63:0] $end
+$var reg 64 r read_port2 [63:0] $end
+$var reg 1 s write_addr_nonzero $end
+$var integer 32 t i [31:0] $end
+$upscope $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+b1000000 i
+b1000000 f
+b1100 e
+b1000000 b
+b1101 a
+b1000000 P
+b1000000 L
+$end
+#0
+$dumpvars
+bx t
+0s
+bx r
+bx q
+0p
+0o
+bx n
+b0 m
+b0 l
+b0 k
+bx j
+bx h
+1g
+b0 d
+b0 c
+b0 `
+b0 _
+b0 ^
+b0 ]
+b0 \
+b0 [
+b0 Z
+b0 Y
+b0 X
+b0 W
+b0 V
+b0 U
+b0 T
+b0 S
+b0 R
+bx Q
+1O
+bx N
+bx M
+1K
+bx J
+bx I
+b0 H
+bx G
+bx F
+b0 E
+bx D
+bx C
+bx B
+bx A
+b0 @
+bx ?
+bx >
+0=
+bx <
+bx ;
+0:
+09
+18
+b0 7
+06
+b0 5
+b0 4
+bx 3
+bx 2
+b0 1
+00
+0/
+x.
+0-
+b0 ,
+bx +
+b0 *
+1)
+b0 (
+b0 '
+0&
+bx %
+bx $
+0#
+0"
+bx !
+$end
+#5000
+b0 D
+b0 n
+b100 C
+b0 %
+b0 <
+b0 M
+b0 N
+b0 $
+b0 ;
+b0 j
+b0 >
+b0 Q
+b0 !
+b0 +
+b0 B
+b100000 t
+1&
+#10000
+0&
+#12000
+bx ?
+bx I
+bx J
+1p
+1o
+1s
+08
+b10 @
+b10 H
+b10 [
+10
+b110011 V
+b11 1
+b11 S
+b11 m
+b1 5
+b1 U
+b1 k
+b10 4
+b10 T
+b10 l
+b1000001000000110110011 (
+b1000001000000110110011 ,
+b1000001000000110110011 R
+0)
+#15000
+0.
+b10100 A
+b10100 F
+b11110 ?
+b11110 I
+b11110 J
+b1 E
+bx $
+bx ;
+bx j
+bx %
+bx <
+bx M
+bx N
+b10100 2
+b10100 h
+b10100 r
+b1010 3
+b1010 G
+b1010 q
+1&
+#20000
+0&
+#25000
+bx D
+bx n
+b11110 %
+b11110 <
+b11110 M
+b11110 N
+b10100 $
+b10100 ;
+b10100 j
+bx >
+bx Q
+b10 E
+1&
+#30000
+0&
+#35000
+b11110 D
+b11110 n
+b11 E
+b11110 >
+b11110 Q
+1&
+#40000
+0&
+#45000
+1-
+b100 E
+1&
+#50000
+0&
+#55000
+b1000 C
+0-
+b100 !
+b100 +
+b100 B
+b0 E
+1&
+#60000
+0&
+#65000
+b1 E
+1&
+#66000
