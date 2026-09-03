@@ -133,7 +133,7 @@ always_comb begin
                     alu_opcode = 4'b0010;
                     illegal = 1'b0;
                 end
-                10'b0110000000: begin
+                10'b0100000000: begin
                     reg_write = 1'b1;
                     alu_opcode = 4'b0110;
                     illegal = 1'b0;

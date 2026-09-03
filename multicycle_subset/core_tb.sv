@@ -96,7 +96,7 @@ initial begin
 
     // sub x3, x2, x1
     instr_memory.memory[2] = {
-        7'b0110000,
+        7'b0100000,
         5'b00001,
         5'b00010,
         3'b000,
