@@ -1,2 +1,4 @@
 *.vcd
 *.out
+*.json
+*.old

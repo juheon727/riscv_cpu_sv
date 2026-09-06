@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
 
-module riscv64_subset_core_multicycle_tb;
+module riscv64_core_tb;
 
 logic clk;
 logic reset;
@@ -14,7 +14,7 @@ logic        dmem_write;
 logic [63:0] dmem_addr;
 logic [63:0] dmem_data;
 
-riscv64_subset_core_multicycle dut (
+riscv64_core dut (
     .clk        (clk),
     .reset      (reset),
 

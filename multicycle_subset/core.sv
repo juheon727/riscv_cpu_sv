@@ -1,4 +1,4 @@
-module riscv64_subset_core_multicycle (
+module riscv64_core (
     input logic clk,
     input logic reset,
     input logic [31:0] instr, // Loaded on IF -> ID edge
