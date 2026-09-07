@@ -1,4 +1,4 @@
-module riscv64_core (
+module datapath (
     input logic clk,
     input logic reset,
     input logic [31:0] instr, // Loaded on IF -> ID edge
@@ -166,3 +166,30 @@ always_ff @(posedge clk) begin
 end
 
 endmodule
+
+module riscv64_core (
+    input logic clk,
+    input logic reset,
+    input logic [31:0] instr, // Loaded on IF -> ID edge
+    output logic [63:0] imem_addr,
+    input logic [63:0] dmem_fetch, // A synchronized data memory module will load the correct value of data memory on an ld instruction on EX -> MEM edge.
+    output logic dmem_read,
+    output logic dmem_write,
+    output logic [63:0] dmem_addr,
+    output logic [63:0] dmem_data
+);
+
+// I know it's not datapath, but for compatibility reasons with testbench.
+datapath datapath_i (
+    .clk(clk),
+    .reset(reset),
+    .instr(instr),
+    .imem_addr(imem_addr),
+    .dmem_fetch(dmem_fetch),
+    .dmem_read(dmem_read),
+    .dmem_write(dmem_write),
+    .dmem_addr(dmem_addr),
+    .dmem_data(dmem_data)
+);
+
+endmodule;
