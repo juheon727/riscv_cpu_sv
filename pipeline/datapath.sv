@@ -54,36 +54,12 @@ end
 
 endmodule
 
-module pipeline_register #(
-    parameter type T = logic [63:0]
-)(
-    input logic clk,
-    input logic reset,
-    input logic flush,
-    input logic stall,
-    input T ctrl,
-    output T ctrl_out
-);
-
-always_ff @(posedge clk) begin
-    if (reset | flush)
-        ctrl_out <= '0;
-    else if (!stall)
-        ctrl_out <= ctrl;
-end
-
-endmodule
-
 
 module datapath (
     input logic clk,
     input logic reset,
     input logic flush,
     input logic stall,
-    input logic [63:0] fw_data1,
-    input logic fw_enable1,
-    input logic [63:0] fw_data2,
-    input logic fw_enable2,
     input logic [31:0] imem_read,
     output logic [63:0] imem_addr,
     input logic [63:0] dmem_rdata,
@@ -91,6 +67,15 @@ module datapath (
     output logic dmem_write,
     output logic [63:0] dmem_addr,
     output logic [63:0] dmem_wdata,
+    output logic [4:0] st_id_reg_raddr1,
+    output logic [4:0] st_id_reg_raddr2,
+    output logic [4:0] st_ex_reg_waddr,
+    output logic st_ex_load_instr,
+    output logic fl_branch_cond,
+    input logic [63:0] fw_data1,
+    input logic fw_enable1,
+    input logic [63:0] fw_data2,
+    input logic fw_enable2,
     output logic [4:0] fw_ex_reg_raddr1,
     output logic [4:0] fw_ex_reg_raddr2,
     output logic [4:0] fw_mem_reg_waddr,
@@ -101,7 +86,6 @@ module datapath (
     output logic [63:0] fw_wb_reg_wdata
 );
 
-logic branch_cond;
 logic [63:0] branch_pc;
 logic [63:0] pc_id;
 
@@ -166,6 +150,9 @@ riscv_subset_decoder decoder (
 
 assign ctrl_id.pc = pc_id;
 
+assign st_id_reg_raddr1 = ctrl_id.reg_raddr1;
+assign st_id_reg_raddr2 = ctrl_id.reg_raddr2;
+
 //EX
 pipeline_register #(
     .T(ctrl_id_t)
@@ -177,6 +164,9 @@ pipeline_register #(
     .ctrl(ctrl_id),
     .ctrl_out(ctrl_id_out)
 );
+
+assign st_ex_load_instr = ctrl_id_out.load_instr;
+assign st_ex_reg_waddr = ctrl_id_out.reg_waddr;
 
 logic [63:0] reg_read1, reg_read2;
 logic [63:0] fw_read1, fw_read2;

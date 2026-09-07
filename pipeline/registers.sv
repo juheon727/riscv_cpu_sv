@@ -59,3 +59,23 @@ always_ff @(posedge clk) begin
 end
 
 endmodule
+
+module pipeline_register #(
+    parameter type T = logic [63:0]
+)(
+    input logic clk,
+    input logic reset,
+    input logic flush,
+    input logic stall,
+    input T ctrl,
+    output T ctrl_out
+);
+
+always_ff @(posedge clk) begin
+    if (reset | flush)
+        ctrl_out <= '0;
+    else if (!stall)
+        ctrl_out <= ctrl;
+end
+
+endmodule

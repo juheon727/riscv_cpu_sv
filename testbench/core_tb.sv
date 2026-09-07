@@ -65,7 +65,7 @@ end
 
 initial begin
     $dumpfile("dump.vcd");
-    $dumpvars(0, riscv64_subset_core_multicycle_tb);
+    $dumpvars(0, riscv64_core_tb);
 end
 
 initial begin
@@ -136,15 +136,15 @@ end
 
 always @(posedge clk) begin
     $display(
-        "time=%0t PC=%0d state=%0d x1=%0d x2=%0d x3=%0d x4=%0d ALU=%0d",
+        "time=%0t PC=%0d x1=%0d x2=%0d x3=%0d x4=%0d ALU=%0d",
         $time,
         imem_addr,
-        dut.processor_state,
-        dut.regfile.data[1],
-        dut.regfile.data[2],
-        dut.regfile.data[3],
-        dut.regfile.data[4],
-        dut.alu_result
+        //dut.processor_state,
+        dut.datapath_i.regfile.data[1],
+        dut.datapath_i.regfile.data[2],
+        dut.datapath_i.regfile.data[3],
+        dut.datapath_i.regfile.data[4],
+        dut.datapath_i.alu_result
     );
 end
 
