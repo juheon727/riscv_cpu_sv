@@ -26,6 +26,8 @@ always_ff @(posedge clk) begin
         for (i = 0; i < 32; i = i + 1) begin
             data[i] <= 64'b0;
         end
+        read_port1 <= '0;
+        read_port2 <= '0;
     end
     else begin
         if (write_enable && write_addr_nonzero) begin

@@ -180,8 +180,9 @@ riscv_regfile regfile (
     .reset(reset),
     .write_enable(reg_write),
     .write_data(reg_wdata),
-    .read_addr1(ctrl_id_out.reg_raddr1),
-    .read_addr2(ctrl_id_out.reg_raddr2),
+    .write_addr(reg_waddr),
+    .read_addr1(ctrl_id.reg_raddr1),
+    .read_addr2(ctrl_id.reg_raddr2),
     .read_port1(reg_read1),
     .read_port2(reg_read2)
 );
@@ -222,6 +223,7 @@ pipeline_register #(
 );
 
 assign branch_cond = ctrl_id_out.branch & zero_flag;
+assign fl_branch_cond = branch_cond;
 assign imm_sl1 = {ctrl_id_out.imm[62:0], 1'b0};
 assign branch_pc = ctrl_id_out.pc + imm_sl1;
 

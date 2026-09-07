@@ -20,6 +20,7 @@ always_ff @(posedge clk) begin
         for (i = 0; i < 1 << ADDR_WIDTH - 1; i = i + 1) begin
             memory[i] <= {{WORD_SIZE}{1'b0}};
         end
+        read_data <= '0;
     end
     
     else begin

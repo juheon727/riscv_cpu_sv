@@ -372,6 +372,25 @@ module riscv_subset_decoder_tb;
             1'b1
         );
 
+        instr = {
+            12'b000000110000,
+            5'b00000,
+            3'b000,
+            5'b00010,
+            7'b0010011
+        };
+
+        check(
+            "ADDI x2, x0, 48",
+            1'b1,
+            1'b1,
+            64'd48,
+            4'b0010,
+            1'b0,
+            1'b0,
+            1'b0,
+            1'b0
+        );
 
         $display("----------------------------------------");
         $display("Decoder tests completed.");

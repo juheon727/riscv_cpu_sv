@@ -107,6 +107,11 @@ datapath datapath_i (
     .fw_wb_reg_wdata(fw_control_in.fw_wb_reg_wdata)
 );
 
+fw_controller fwc (
+    .fw_control_in(fw_control_in),
+    .fw_control_out(fw_control_out)
+);
+
 assign flush = fl_branch_cond;
 assign stall = st_ex_load_instr && (
     (st_id_reg_raddr1 == st_ex_reg_waddr) ||
