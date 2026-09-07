@@ -42,15 +42,17 @@ always_comb begin
     fw_control_out.fw_data2 = 64'b0;
     fw_control_out.fw_enable2 = 1'b0;
 
-    if (fw_control_in.fw_mem_reg_write && 
-        (fw_control_in.fw_ex_reg_raddr2 == fw_control_in.fw_mem_reg_waddr)) begin
-        fw_control_out.fw_data2 = fw_control_in.fw_mem_reg_wdata;
-        fw_control_out.fw_enable2 = 1'b1;
-    end
-    else if (fw_control_in.fw_wb_reg_write &&
-        (fw_control_in.fw_ex_reg_raddr2 == fw_control_in.fw_wb_reg_waddr)) begin
-        fw_control_out.fw_data2 = fw_control_in.fw_wb_reg_wdata;
-        fw_control_out.fw_enable2 = 1'b1;
+    if (fw_control_in.fw_mem_reg_waddr != '0) begin
+        if (fw_control_in.fw_mem_reg_write && 
+            (fw_control_in.fw_ex_reg_raddr2 == fw_control_in.fw_mem_reg_waddr)) begin
+            fw_control_out.fw_data2 = fw_control_in.fw_mem_reg_wdata;
+            fw_control_out.fw_enable2 = 1'b1;
+        end
+        else if (fw_control_in.fw_wb_reg_write &&
+            (fw_control_in.fw_ex_reg_raddr2 == fw_control_in.fw_wb_reg_waddr)) begin
+            fw_control_out.fw_data2 = fw_control_in.fw_wb_reg_wdata;
+            fw_control_out.fw_enable2 = 1'b1;
+        end
     end
 end
 
