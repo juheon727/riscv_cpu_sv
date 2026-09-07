@@ -172,12 +172,15 @@ module riscv64_core (
     input logic reset,
     input logic [31:0] instr, // Loaded on IF -> ID edge
     output logic [63:0] imem_addr,
+    output logic imem_read,
     input logic [63:0] dmem_fetch, // A synchronized data memory module will load the correct value of data memory on an ld instruction on EX -> MEM edge.
     output logic dmem_read,
     output logic dmem_write,
     output logic [63:0] dmem_addr,
     output logic [63:0] dmem_data
 );
+
+assign imem_read = 1'b1;
 
 // I know it's not datapath, but for compatibility reasons with testbench.
 datapath datapath_i (

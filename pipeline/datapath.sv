@@ -60,7 +60,7 @@ module datapath (
     input logic reset,
     input logic flush,
     input logic stall,
-    input logic [31:0] imem_read,
+    input logic [31:0] imem_rdata,
     output logic [63:0] imem_addr,
     input logic [63:0] dmem_rdata,
     output logic dmem_read,
@@ -124,7 +124,7 @@ packed_dff #(
 
 //ID
 logic [31:0] instr;
-assign instr = clear_instr ? 32'b0 : imem_read;
+assign instr = clear_instr ? 32'b0 : imem_rdata;
 
 logic illegal;
 ctrl_id_t ctrl_id, ctrl_id_out;

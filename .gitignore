@@ -3,3 +3,7 @@
 *.json
 *.old
 *.svg
+*.o
+*.elf
+*.hex
+*.bin

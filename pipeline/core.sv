@@ -61,6 +61,7 @@ module riscv64_core (
     input logic reset,
     input logic [31:0] instr,
     output logic [63:0] imem_addr,
+    output logic imem_read,
     input logic [63:0] dmem_fetch,
     output logic dmem_read,
     output logic dmem_write,
@@ -81,7 +82,7 @@ datapath datapath_i (
     .reset(reset),
     .flush(flush),
     .stall(stall),
-    .imem_read(instr),
+    .imem_rdata(instr),
     .imem_addr(imem_addr),
     .dmem_rdata(dmem_fetch),
     .dmem_read(dmem_read),
@@ -116,6 +117,7 @@ assign flush = fl_branch_cond;
 assign stall = st_ex_load_instr && (
     (st_id_reg_raddr1 == st_ex_reg_waddr) ||
     (st_id_reg_raddr2 == st_ex_reg_waddr)
-);
+) && (st_ex_reg_waddr != '0);
+assign imem_read = !stall;
 
 endmodule
