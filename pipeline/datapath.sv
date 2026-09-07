@@ -91,6 +91,8 @@ module datapath (
     output logic dmem_write,
     output logic [63:0] dmem_addr,
     output logic [63:0] dmem_wdata,
+    output logic [4:0] fw_ex_reg_raddr1,
+    output logic [4:0] fw_ex_reg_raddr2,
     output logic [4:0] fw_mem_reg_waddr,
     output logic fw_mem_reg_write,
     output logic [63:0] fw_mem_reg_wdata,
@@ -124,13 +126,25 @@ pipeline_register #(
     .ctrl_out(pc_id)
 );
 
+logic clear_instr;
+
+packed_dff #(
+    .WORD_SIZE(1)
+) flush_dff (
+    .clk(clk),
+    .reset(reset),
+    .write_enable(1'b1),
+    .write_data(flush),
+    .stored_data(clear_instr)
+);
+
 //ID
 logic [31:0] instr;
-assign instr = flush ? 32'b0 : imem_read;
+assign instr = clear_instr ? 32'b0 : imem_read;
 
 logic illegal;
 ctrl_id_t ctrl_id, ctrl_id_out;
-logic [63:0] reg_waddr;
+logic [4:0] reg_waddr;
 logic [63:0] reg_wdata;
 logic reg_write;
 
@@ -158,8 +172,8 @@ pipeline_register #(
 ) id_ex (
     .clk(clk),
     .reset(reset),
-    .flush(flush),
-    .stall(stall),
+    .flush(flush | stall),
+    .stall(1'b0),
     .ctrl(ctrl_id),
     .ctrl_out(ctrl_id_out)
 );
@@ -182,6 +196,9 @@ riscv_regfile regfile (
     .read_port2(reg_read2)
 );
 
+assign fw_ex_reg_raddr1 = ctrl_id_out.reg_raddr1;
+assign fw_ex_reg_raddr2 = ctrl_id_out.reg_raddr2;
+
 assign fw_read1 = fw_enable1? fw_data1 : reg_read1;
 assign fw_read2 = fw_enable2? fw_data2 : reg_read2;
 assign alu_operand2 = ctrl_id_out.use_imm_in_alu? ctrl_id_out.imm : fw_read2;
@@ -195,15 +212,13 @@ alu_64 alu (
 );
 
 ctrl_ex_t ctrl_ex, ctrl_ex_out;
-assign ctrl_ex = '{
-    reg_write: ctrl_id_out.reg_write,
-    reg_waddr: ctrl_id_out.reg_waddr,
-    dmem_read: ctrl_id_out.dmem_read,
-    dmem_write: ctrl_id_out.dmem_write,
-    load_instr: ctrl_id_out.load_instr,
-    alu_result: alu_result,
-    fw_read2: fw_read2
-};
+assign ctrl_ex.reg_write = ctrl_id_out.reg_write;
+assign ctrl_ex.reg_waddr = ctrl_id_out.reg_waddr;
+assign ctrl_ex.dmem_read = ctrl_id_out.dmem_read;
+assign ctrl_ex.dmem_write = ctrl_id_out.dmem_write;
+assign ctrl_ex.load_instr = ctrl_id_out.load_instr;
+assign ctrl_ex.alu_result = alu_result;
+assign ctrl_ex.fw_read2 = fw_read2;
 
 pipeline_register #(
     .T(ctrl_ex_t)
@@ -231,12 +246,10 @@ assign fw_mem_reg_wdata = ctrl_ex_out.alu_result;
 assign fw_mem_reg_write = ctrl_ex_out.reg_write;
 
 ctrl_mem_t ctrl_mem, ctrl_mem_out;
-assign ctrl_mem = '{
-    reg_write: ctrl_ex_out.reg_write,
-    reg_waddr: ctrl_ex_out.reg_waddr,
-    load_instr: ctrl_ex_out.load_instr,
-    alu_result: ctrl_ex_out.alu_result
-};
+assign ctrl_mem.reg_write = ctrl_ex_out.reg_write;
+assign ctrl_mem.reg_waddr = ctrl_ex_out.reg_waddr;
+assign ctrl_mem.load_instr = ctrl_ex_out.load_instr;
+assign ctrl_mem.alu_result = ctrl_ex_out.alu_result;
 
 pipeline_register #(
     .T(ctrl_mem_t)
@@ -248,5 +261,13 @@ pipeline_register #(
     .ctrl(ctrl_mem),
     .ctrl_out(ctrl_mem_out)
 );
+
+//WB
+assign reg_wdata = ctrl_mem_out.load_instr? dmem_rdata : ctrl_mem_out.alu_result;
+assign reg_waddr = ctrl_mem_out.reg_waddr;
+assign reg_write = ctrl_mem_out.reg_write;
+assign fw_wb_reg_wdata = reg_wdata;
+assign fw_wb_reg_waddr = reg_waddr;
+assign fw_wb_reg_write = reg_write;
 
 endmodule
